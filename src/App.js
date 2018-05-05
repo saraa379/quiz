@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import LoggedIn from './LoggedIn.js';
+import LoggedOut from './LoggedOut.js';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {loginStatus: false};
+  }
   render() {
     return (
-      <div className="App">
-        <div className="Wrap">
-            <header className="App-header">
-              <h1 className="App-title">Welcome to React</h1>
-            </header>
-        </div>
-     </div>
+      <div className="AppWrap">
+          <LoggedOut visibility={this.state.loginStatus}/>
+          <LoggedIn visibility={this.state.loginStatus}/>
+     </div> //end of AppWrap
     );
   }
 }
