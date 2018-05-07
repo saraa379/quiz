@@ -8,8 +8,9 @@ class LoggedOut extends Component {
 
 	  render() {
 			const visible = this.props.visibility;
+			 const logClick = this.props.callbackLogin;
 			if (visible == true) {
-	      return <div id="WrapLoggedOut" className="invincible">
+	      return <div className="invincible">
 	            </div>
 	    }
 			return (
@@ -17,7 +18,7 @@ class LoggedOut extends Component {
 							<header>
 									<h1>WELCOME TO THE ASTRONOMY QUIZ</h1>
 									<p>Interested to test your knowledge about space?</p>
-									<button>Log in via Google</button>
+									<button onClick={() => logClick}>Log in via Google</button>
 							</header>
 					</div>
 			);
