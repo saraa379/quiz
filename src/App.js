@@ -12,15 +12,10 @@ class App extends Component {
     super(props);
     this.state = {loginStatus: false};
     this.loginClick = this.loginClick.bind(this);
-    this.setLoggedInStatus = this.setLoggedInStatus.bind(this);
-  }
-
-  setLoggedInStatus(){
-     this.setState({loginStatus: true});
   }
 
   loginClick() {
-    console.log('Login button is clicked');
+    //console.log('Login button is clicked');
     var provider = new firebase.auth.GoogleAuthProvider();
 
         //To sign in with a pop-up window, call signInWithPopup
@@ -56,14 +51,14 @@ class App extends Component {
           if (user) {
 
               console.log('onAuthStateChanged: user is signed in', user);
-              this.setState({loginStatus: true});
+              //this.setState({loginStatus: true});
               //this.setLoggedInStatus();
           } else {
             // User is signed out.
             // ...
               console.log('onAuthStateChanged: user is signed out');
       }
-    }).bind(this); //end of firebase auth
+    }); //end of firebase auth
 
   }//end of componentDidMount
   render() {

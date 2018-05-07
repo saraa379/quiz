@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './LoggedIn.css';
+import Menu from './Menu.js';
 
 class LoggedIn extends Component {
 	constructor(props) {
 			super(props);
+			this.state = {currentTab: "Quiz"};
 	}
 
 	render() {
@@ -14,7 +16,10 @@ class LoggedIn extends Component {
 				}
 				return (
 						<div id="WrapLoggedIn">
-								Logged in component
+								<header>
+										<Menu chosenTab={this.state.currentTab}></Menu>
+										<div>User info</div>
+								</header>
 						</div>
 				);
 	  } //end of render

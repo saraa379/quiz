@@ -1,4 +1,4 @@
-#WrapLoggedOut {
+#WrapLoggedIn {
   text-align: center;
   position: relative;
   height: 100%;
@@ -6,7 +6,7 @@
 	      	rgba(9, 11, 87, 0.3),
 	      	rgba(0, 0, 0, 0.5)
 	    	  ),
-			   url('img/space9.jpg');
+			   url('img/planet2.jpg');
   background-position: center 40%;
   background-repeat: no-repeat;
   background-size: cover;
