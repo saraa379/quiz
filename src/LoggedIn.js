@@ -10,6 +10,7 @@ class LoggedIn extends Component {
 
 	render() {
 				const visible = this.props.visibility;
+				const funcClick = this.props.callbackLogOut;
 				if (visible == false) {
 					return <div className="invincible">
 								</div>
@@ -18,8 +19,10 @@ class LoggedIn extends Component {
 						<div id="WrapLoggedIn">
 								<header>
 										<Menu chosenTab={this.state.currentTab}></Menu>
-										<div>User info</div>
+										<div id="logOut" onClick={() => funcClick()}><i className="fas fa-sign-out-alt"></i></div>
 								</header>
+								<div className="tabContent">
+								</div>
 						</div>
 				);
 	  } //end of render

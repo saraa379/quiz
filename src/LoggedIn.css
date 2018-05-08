@@ -17,9 +17,15 @@ header {
   width: 100%;
   color: white;
 }
+#headerDiv {
+    display: inline;
+    float: right;
+}
 
-.child {
-    margin: auto;
+#logOut {
+    display: inline;
+    float: right;
+    font-size: 1.7rem;
 }
 
 h1 {

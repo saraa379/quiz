@@ -7,8 +7,8 @@ class LoggedOut extends Component {
 	  }
 
 	  render() {
-			const visible = this.props.visibility;
-			 const logClick = this.props.callbackLogin;
+			 const visible = this.props.visibility;
+			 const funcClick = this.props.callbackLogin;
 			if (visible == true) {
 	      return <div className="invincible">
 	            </div>
@@ -18,7 +18,7 @@ class LoggedOut extends Component {
 							<header>
 									<h1>WELCOME TO THE ASTRONOMY QUIZ</h1>
 									<p>Interested to test your knowledge about space?</p>
-									<button onClick={() => logClick}>Log in via Google</button>
+									<button onClick={() => funcClick()}>Log in via Google</button>
 							</header>
 					</div>
 			);

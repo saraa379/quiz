@@ -12,6 +12,7 @@ class App extends Component {
     super(props);
     this.state = {loginStatus: false};
     this.loginClick = this.loginClick.bind(this);
+    this.logOutClick = this.logOutClick.bind(this);
   }
 
   loginClick() {
@@ -45,8 +46,22 @@ class App extends Component {
         errorMsg.innerText = 'Sign in is unsuccessful. Please try again.';
       });//end of signInWithPopup function
   }
-  componentDidMount() {
+  logOutClick() {
+      console.log('Logout button is clicked');
+      firebase.auth().signOut().then(function() {
+			  // Sign-out successful.
+			  console.log('User is signed out');
+        //this.setState({loginStatus: false});
 
+			}).then((user) => {
+        this.setState({loginStatus: false});
+      }).catch(function(error) {
+			  //console.log('Error sign out: ' + error);
+			});
+
+  }
+  componentDidMount() {
+      /*
         firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
 
@@ -59,13 +74,13 @@ class App extends Component {
               console.log('onAuthStateChanged: user is signed out');
       }
     }); //end of firebase auth
-
+*/
   }//end of componentDidMount
   render() {
     return (
-      <div className="AppWrap" onClick={this.loginClick}>
-          <LoggedOut visibility={this.state.loginStatus} onClick={this.loginClick}/>
-          <LoggedIn visibility={this.state.loginStatus}/>
+      <div className="AppWrap">
+          <LoggedOut visibility={this.state.loginStatus} callbackLogin={this.loginClick}/>
+          <LoggedIn visibility={this.state.loginStatus} callbackLogOut={this.logOutClick}/>
      </div> //end of AppWrap
     );
   }
