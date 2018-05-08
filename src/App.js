@@ -2,15 +2,22 @@ import React, { Component } from 'react';
 import LoggedIn from './LoggedIn.js';
 import LoggedOut from './LoggedOut.js';
 import './App.css';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import fire from './fire';
+//import db from './fire';
 
 
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {loginStatus: false};
+    this.state = {loginStatus: false, curUser: {
+					generatedName: "",
+					email: "",
+					photoUrl: "",
+          key: "",
+					highestScore: 0
+				}};
     this.loginClick = this.loginClick.bind(this);
     this.logOutClick = this.logOutClick.bind(this);
   }
@@ -32,18 +39,71 @@ class App extends Component {
         //this.setState({loginStatus: true});
 
       }).then((user) => {
-     this.setState({loginStatus: true});
+          this.setState({loginStatus: true});
+          var name = user.displayName;
+        	var email = user.email;
+        	var photoUrl = user.photoURL;
+          console.log("Logged in user: " + name);
+	        console.log("Logged in user email: " + user.email);
+          console.log("Photourl: " + photoUrl);
+          //check logged in user exist in db
+
+          //Checks if user already exist in the DB
+    			fire.database().ref('users/').once('value', function(snapshot) {
+    				let data = snapshot.val();
+    				for(let child in data){
+    					let r = data[child];
+    					//console.log("remail: " + r.email);
+    					//console.log("userO.email: " + userO.email);
+    					if(r.email == user.email){
+                //if user exists in db, save r as current user
+    						//console.log("User exist");
+                var userExist = true;
+    					} //end of if else
+
+    				}//end of for
+            callLater(userExist);
+    			})//end of db.ref users
+
+          function callLater(exist){
+            //if user doesn't exist in db add new user
+            if(exist == false){
+                //For the new user
+                /* Retrives highestScore from Firebase Database */
+               let uid = fire.database().ref('latestUserID');
+               uid.once('value', snapshot => {
+               let curUID = snapshot.val() + 1;
+               console.log("UID from db " + curUID);
+               //updating latestUserID in db
+               firebase.database().ref('latestUserID').set(curUID);
+               //creates new user object in db
+               const newUser = {
+                  name: name,
+                  email: email,
+                  uid: curUID,
+                  highScore: 0,
+                  key: ""
+                }//end of obj
+              //Adding newuser into db
+              var userKey = fire.database().ref('users/').push(newUser).key;
+              //console.log("User key " + userKey);
+              firebase.database().ref('users/' + userKey + '/key').set(userKey);
+              newUser.key = userKey;
+              //console.log("New user name: " + newUser.name);
+              //console.log("New user email: " + newUser.email);
+              //console.log("New user id: " + newUser.uid);
+              //console.log("New user key: " + newUser.key);
+
+              //that.setState({curUser.generatedName: newUser.name});
+              //return newUser;
+              })   //end of messagesRef
+        } //end of if
+      } //end of callLater
+
   }).catch(function(error) {
         // Handle Errors here.
-        var errorCode = error.code;
         var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
         console.log('sign in is uncessful: ' + errorMessage);
-        var errorMsg = document.getElementById('errorMsg');
-        errorMsg.innerText = 'Sign in is unsuccessful. Please try again.';
       });//end of signInWithPopup function
   }
   logOutClick() {
