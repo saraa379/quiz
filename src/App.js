@@ -25,15 +25,16 @@ class App extends Component {
   loginClick() {
     //console.log('Login button is clicked');
     var provider = new firebase.auth.GoogleAuthProvider();
+    var that = this; //otherwise this doesn't work inside auth
 
         //To sign in with a pop-up window, call signInWithPopup
       firebase.auth().signInWithPopup(provider).then(function(result) {
         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
         var token = result.credential.accessToken;
-        console.log('Token: ' + token);
+        //console.log('Token: ' + token);
         // The signed-in user info.
         var user = result.user;
-        console.log('User info: ' + user);
+        //console.log('User info: ' + user);
         return user;
         //this.setLoggedInStatus();
         //this.setState({loginStatus: true});
@@ -51,6 +52,7 @@ class App extends Component {
           //Checks if user already exist in the DB
     			fire.database().ref('users/').once('value', function(snapshot) {
     				let data = snapshot.val();
+            var userExist = false;
     				for(let child in data){
     					let r = data[child];
     					//console.log("remail: " + r.email);
@@ -58,54 +60,70 @@ class App extends Component {
     					if(r.email == user.email){
                 //if user exists in db, save r as current user
     						//console.log("User exist");
-                var userExist = true;
-    					} //end of if else
+                //this.state.curUser.generatedName = name;
+                //console.log(this.state.curUser.generatedName);
+                userExist = true;
+              //saving old user obj into state
+                that.state.curUser.generatedName = r.name;
+                //console.log("state Old user name: " + that.state.curUser.generatedName);
+                that.state.curUser.email = r.email;
+                //console.log("state Old user email: " + that.state.curUser.email);
+                that.state.curUser.photoUrl = r.photoUrl;
+                //console.log("state Old user photoUrl: " + that.state.curUser.photoUrl);
+                that.state.curUser.key = r.key;
+                //console.log("state Old user key: " + that.state.curUser.key);
+                that.state.curUser.highestScore = r.highScore;
+                //console.log("state Old user highestScore: " + that.state.curUser.highestScore);
+    					} //end of if
 
     				}//end of for
-            callLater(userExist);
-    			})//end of db.ref users
+                  if(userExist == false){
+                      //For the new user
+                      /* Retrives highestScore from Firebase Database */
+                     let uid = fire.database().ref('latestUserID');
+                     uid.once('value', snapshot => {
+                     let curUID = snapshot.val() + 1;
+                     console.log("UID from db " + curUID);
+                     //updating latestUserID in db
+                     firebase.database().ref('latestUserID').set(curUID);
+                     var generName = "User" + curUID;
+                     //creates new user object in db
+                     const newUser = {
+                        name: generName,
+                        email: email,
+                        uid: curUID,
+                        highScore: 0,
+                        key: "",
+                        photoUrl: photoUrl
+                      }//end of obj
+                    //Adding newuser into db
+                    var userKey = fire.database().ref('users/').push(newUser).key;
+                    //console.log("User key " + userKey);
+                    firebase.database().ref('users/' + userKey + '/key').set(userKey);
+                    newUser.key = userKey;
+                    //saving old user obj into state
+                      that.state.curUser.generatedName = newUser.name;
+                      //console.log("state new user name: " + that.state.curUser.generatedName);
+                      that.state.curUser.email = newUser.email;
+                      //console.log("state new user email: " + that.state.curUser.email);
+                      that.state.curUser.photoUrl = newUser.photoUrl;
+                      //console.log("state new user photoUrl: " + that.state.curUser.photoUrl);
+                      that.state.curUser.key = newUser.key;
+                      //console.log("state new user key: " + that.state.curUser.key);
+                      that.state.curUser.highestScore = newUser.highScore;
+                      //console.log("state new user highestScore: " + that.state.curUser.highestScore);
 
-          function callLater(exist){
-            //if user doesn't exist in db add new user
-            if(exist == false){
-                //For the new user
-                /* Retrives highestScore from Firebase Database */
-               let uid = fire.database().ref('latestUserID');
-               uid.once('value', snapshot => {
-               let curUID = snapshot.val() + 1;
-               console.log("UID from db " + curUID);
-               //updating latestUserID in db
-               firebase.database().ref('latestUserID').set(curUID);
-               //creates new user object in db
-               const newUser = {
-                  name: name,
-                  email: email,
-                  uid: curUID,
-                  highScore: 0,
-                  key: ""
-                }//end of obj
-              //Adding newuser into db
-              var userKey = fire.database().ref('users/').push(newUser).key;
-              //console.log("User key " + userKey);
-              firebase.database().ref('users/' + userKey + '/key').set(userKey);
-              newUser.key = userKey;
-              //console.log("New user name: " + newUser.name);
-              //console.log("New user email: " + newUser.email);
-              //console.log("New user id: " + newUser.uid);
-              //console.log("New user key: " + newUser.key);
-
-              //that.setState({curUser.generatedName: newUser.name});
-              //return newUser;
-              })   //end of messagesRef
-        } //end of if
-      } //end of callLater
+                  })   //end of ref
+              } //end of if
+    			})
 
   }).catch(function(error) {
         // Handle Errors here.
         var errorMessage = error.message;
         console.log('sign in is uncessful: ' + errorMessage);
-      });//end of signInWithPopup function
-  }
+      });//catch
+  } //end of loginClick
+
   logOutClick() {
       console.log('Logout button is clicked');
       firebase.auth().signOut().then(function() {
@@ -137,10 +155,11 @@ class App extends Component {
 */
   }//end of componentDidMount
   render() {
+    console.log("Rendering user in app: " + this.state.curUser.generatedName);
     return (
       <div className="AppWrap">
           <LoggedOut visibility={this.state.loginStatus} callbackLogin={this.loginClick}/>
-          <LoggedIn visibility={this.state.loginStatus} callbackLogOut={this.logOutClick}/>
+          <LoggedIn visibility={this.state.loginStatus} logUser={this.state.curUser} callbackLogOut={this.logOutClick}/>
      </div> //end of AppWrap
     );
   }

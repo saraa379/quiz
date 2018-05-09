@@ -11,6 +11,8 @@ class LoggedIn extends Component {
 	render() {
 				const visible = this.props.visibility;
 				const funcClick = this.props.callbackLogOut;
+				const user = this.props.logUser;
+				console.log("LoggedIn comp recieved: " + this.props.logUser.generatedName);
 				if (visible == false) {
 					return <div className="invincible">
 								</div>
