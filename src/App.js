@@ -44,9 +44,9 @@ class App extends Component {
           var name = user.displayName;
         	var email = user.email;
         	var photoUrl = user.photoURL;
-          console.log("Logged in user: " + name);
-	        console.log("Logged in user email: " + user.email);
-          console.log("Photourl: " + photoUrl);
+          //console.log("Logged in user: " + name);
+	        //console.log("Logged in user email: " + user.email);
+          //console.log("Photourl: " + photoUrl);
           //check logged in user exist in db
 
           //Checks if user already exist in the DB
@@ -64,16 +64,17 @@ class App extends Component {
                 //console.log(this.state.curUser.generatedName);
                 userExist = true;
               //saving old user obj into state
-                that.state.curUser.generatedName = r.name;
-                //console.log("state Old user name: " + that.state.curUser.generatedName);
-                that.state.curUser.email = r.email;
-                //console.log("state Old user email: " + that.state.curUser.email);
-                that.state.curUser.photoUrl = r.photoUrl;
-                //console.log("state Old user photoUrl: " + that.state.curUser.photoUrl);
-                that.state.curUser.key = r.key;
-                //console.log("state Old user key: " + that.state.curUser.key);
-                that.state.curUser.highestScore = r.highScore;
-                //console.log("state Old user highestScore: " + that.state.curUser.highestScore);
+                //this.setState({loginStatus: true});
+                that.setState({
+                  curUser: {
+                    generatedName: r.name,
+                    email: r.email,
+                    photoUrl: r.photoUrl,
+                    key: r.key,
+                    highestScore: r.highScore
+                  }
+                });
+
     					} //end of if
 
     				}//end of for
@@ -102,17 +103,15 @@ class App extends Component {
                     firebase.database().ref('users/' + userKey + '/key').set(userKey);
                     newUser.key = userKey;
                     //saving old user obj into state
-                      that.state.curUser.generatedName = newUser.name;
-                      //console.log("state new user name: " + that.state.curUser.generatedName);
-                      that.state.curUser.email = newUser.email;
-                      //console.log("state new user email: " + that.state.curUser.email);
-                      that.state.curUser.photoUrl = newUser.photoUrl;
-                      //console.log("state new user photoUrl: " + that.state.curUser.photoUrl);
-                      that.state.curUser.key = newUser.key;
-                      //console.log("state new user key: " + that.state.curUser.key);
-                      that.state.curUser.highestScore = newUser.highScore;
-                      //console.log("state new user highestScore: " + that.state.curUser.highestScore);
-
+                    that.setState({
+                      curUser: {
+                        generatedName: newUser.name,
+                        email: newUser.email,
+                        photoUrl: newUser.photoUrl,
+                        key: newUser.key,
+                        highestScore: newUser.highScore
+                      }
+                    });
                   })   //end of ref
               } //end of if
     			})

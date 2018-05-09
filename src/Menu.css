@@ -12,3 +12,11 @@ nav div {
 nav div:hover {
     border-bottom: 3px solid #3300FF;
 }
+
+.invincible {
+    display: none;
+}
+
+.chosen {
+    border-bottom: 3px solid #3300FF;
+}
