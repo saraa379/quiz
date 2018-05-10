@@ -111,7 +111,7 @@ class App extends Component {
                         key: newUser.key,
                         highestScore: newUser.highScore
                       }
-                    });
+                    });//end of setState
                   })   //end of ref
               } //end of if
     			})
@@ -137,22 +137,7 @@ class App extends Component {
 			});
 
   }
-  componentDidMount() {
-      /*
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
 
-              console.log('onAuthStateChanged: user is signed in', user);
-              //this.setState({loginStatus: true});
-              //this.setLoggedInStatus();
-          } else {
-            // User is signed out.
-            // ...
-              console.log('onAuthStateChanged: user is signed out');
-      }
-    }); //end of firebase auth
-*/
-  }//end of componentDidMount
   render() {
     console.log("Rendering user in app: " + this.state.curUser.generatedName);
     return (
