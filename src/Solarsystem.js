@@ -55,7 +55,7 @@ class Solarsystem extends Component {
 		for (var i = 0; i < 6; i++) {
 			var randomNr = 0;
 			while(this.state.randomNumbers.includes(randomNr)){
-					var randomNr = Math.floor((Math.random() * 10) + 1);
+					var randomNr = Math.floor((Math.random() * 15) + 1);
 			}
 			this.state.randomNumbers.push(randomNr);
 		}
