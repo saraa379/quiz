@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import './Solarsystem.css';
 import firebase from 'firebase';
 import fire from './fire';
 import QuizPage from './QuizPage.js';
+import './QuizPage.css';
 
 class Solarsystem extends Component {
 	constructor(props) {
 			super(props);
 			this.state = {currentPage: 1, randomNumbers: [], score: 0,
+				prevScore: 0,
+				userKey: "",
 				quiz1: {
 					question: "",
 					answer1: "",
@@ -160,9 +162,16 @@ class Solarsystem extends Component {
 		}*///end of for
 
   } //end of didmount
+
+	componentWillReceiveProps(newProps){
+				this.setState({prevScore: newProps.user.highestScore});//end of setState
+				this.setState({userKey: newProps.user.key});
+	}//end of will recieve props
+
 //quiz page button is clicked
 	quizClicked(option){
-			console.log("clicked option: " + option);
+			//console.log("clicked option: " + option);
+			console.log("current page " + this.state.currentPage);
 			//findout current quiz based on current Page
 			var currentQuiz = {};
 			if(this.state.currentPage == 1){
@@ -185,6 +194,18 @@ class Solarsystem extends Component {
 				tempScore = tempScore + 5
 				this.setState({score: tempScore});
 			}
+
+			//checks if new score is more that prev prevScore
+			if (this.state.currentPage == 5){
+					console.log("New score " + this.state.score);
+					console.log("old score " + this.state.prevScore);
+					console.log("user key " + this.state.userKey);
+					if(this.state.prevScore < this.state.score){
+							//updates current users highestScore in db
+						fire.database().ref('users/' + this.state.userKey + '/highScore').set(this.state.score);
+					}
+			}
+			console.log("Solar system comp user previous score: " + this.props.user.highestScore);
 			//current page is incremented by 1
 			var tempCurrentPage = this.state.currentPage;
 			tempCurrentPage = tempCurrentPage + 1;
@@ -194,6 +215,8 @@ class Solarsystem extends Component {
 
 	render() {
 		//Retrieving questions from database
+				//console.log("Solar system comp user score: " + this.props.user.highestScore);
+				//console.log("Solar system comp user key: " + this.props.user.key);
 
 				const visible = this.props.visibility;
 				if (visible == false) {
@@ -201,19 +224,41 @@ class Solarsystem extends Component {
 								</div>
 				}
 				if (this.state.currentPage == 2) {
-					return <div className="quizWrap"> Page 2
-								</div>
+					return <QuizPage quizType="Solar system" page="2"
+										score={this.state.score}
+										quiz={this.state.quiz2}
+										callbackQuiz={this.quizClicked}
+										/>
 				} else if(this.state.currentPage == 3) {
-					return <div className="quizWrap"> Page 3
-								</div>
+					return <QuizPage quizType="Solar system" page="3"
+										score={this.state.score}
+										quiz={this.state.quiz3}
+										callbackQuiz={this.quizClicked}
+										/>
 				} else if(this.state.currentPage == 4) {
-					return <div className="quizWrap"> Page 4
-								</div>
+					return <QuizPage quizType="Solar system" page="4"
+										score={this.state.score}
+										quiz={this.state.quiz4}
+										callbackQuiz={this.quizClicked}
+										/>
 				} else if(this.state.currentPage == 5) {
-					return <div className="quizWrap"> Page 5
-								</div>
+					return <QuizPage quizType="Solar system" page="5"
+										score={this.state.score}
+										quiz={this.state.quiz5}
+										callbackQuiz={this.quizClicked}
+										/>
 				} else if(this.state.currentPage == 6) {
-					return <div className="quizWrap"> Result
+					var feedback = "";
+							if (this.state.score >= 15){
+									feedback = "Brilliant! What are you doing here? NASA needs you.";
+							} else if (this.state.score < 15 && this.state.score > 5) {
+									feedback = "Good job!";
+							} else {
+									feedback = "Almost there! Just read a little more science-fiction.";
+							}
+					return <div className="quizWrap">
+											<h3>{feedback}</h3>
+											<p>Your score: {this.state.score} out of 25</p>
 								</div>
 				}
 				return (

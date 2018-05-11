@@ -50,7 +50,7 @@ class App extends Component {
           //check logged in user exist in db
 
           //Checks if user already exist in the DB
-    			fire.database().ref('users/').once('value', function(snapshot) {
+    			fire.database().ref('users/').on('value', function(snapshot) {
     				let data = snapshot.val();
             var userExist = false;
     				for(let child in data){
