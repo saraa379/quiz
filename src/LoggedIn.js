@@ -25,7 +25,7 @@ class LoggedIn extends Component {
 	}
 
 	componentWillReceiveProps(newProps){
-				console.log("LoggedIn comp did mount");
+				//console.log("LoggedIn comp did mount");
 				this.setState({
 					curUser: {
 							generatedName: newProps.logUser.generatedName,
@@ -36,7 +36,7 @@ class LoggedIn extends Component {
 					}
 				});//end of setState
 
-	}//end of didmount
+	}//end of will recieve props
 
 	tabClick(ind) {
     //console.log('Wrapper: Click happened: ' + ind);
@@ -68,11 +68,11 @@ class LoggedIn extends Component {
 								<div className="tabContent">
 											<Quiz visibility={(this.state.currentContent=="Quiz") ? true : false} quizTypeClick={this.quizTypeClick}></Quiz>
 											<Highscore visibility={(this.state.currentContent=="High score") ? true : false}></Highscore>
-											<Profile visibility={(this.state.currentContent=="Profile") ? true : false}></Profile>
+											<Profile user={this.state.curUser} visibility={(this.state.currentContent=="Profile") ? true : false}></Profile>
 											<Solarsystem user={this.state.curUser} visibility={(this.state.currentContent=="Solarsystem") ? true : false} menuClicked={this.state.menuClicked}></Solarsystem>
-											<Starsplanets visibility={(this.state.currentContent=="Starsplanets") ? true : false} menuClicked={this.state.menuClicked}></Starsplanets>
-											<Earth visibility={(this.state.currentContent=="Earth") ? true : false} menuClicked={this.state.menuClicked}></Earth>
-											<Mixed visibility={(this.state.currentContent=="Mixed") ? true : false} menuClicked={this.state.menuClicked}></Mixed>
+											<Starsplanets user={this.state.curUser} visibility={(this.state.currentContent=="Starsplanets") ? true : false} menuClicked={this.state.menuClicked}></Starsplanets>
+											<Earth user={this.state.curUser} visibility={(this.state.currentContent=="Earth") ? true : false} menuClicked={this.state.menuClicked}></Earth>
+											<Mixed user={this.state.curUser} visibility={(this.state.currentContent=="Mixed") ? true : false} menuClicked={this.state.menuClicked}></Mixed>
 								</div>
 						</div>
 				);

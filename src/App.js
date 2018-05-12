@@ -4,7 +4,6 @@ import LoggedOut from './LoggedOut.js';
 import './App.css';
 import firebase from 'firebase';
 import fire from './fire';
-//import db from './fire';
 
 
 
@@ -30,8 +29,6 @@ class App extends Component {
         //To sign in with a pop-up window, call signInWithPopup
       firebase.auth().signInWithPopup(provider).then(function(result) {
         // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-        var token = result.credential.accessToken;
-        //console.log('Token: ' + token);
         // The signed-in user info.
         var user = result.user;
         //console.log('User info: ' + user);

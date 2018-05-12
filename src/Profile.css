@@ -1,5 +1,43 @@
-
-
 .invincible {
     display: none;
+}
+
+.wrapProfile {
+    border: 3px solid white;
+    max-width: 600px;
+    width: 70%;
+    max-height: 600px;
+    margin: auto;
+    margin-top: 50px;
+    color: white;
+}
+#profilePic {
+      width: 200px;
+      height: 200px;
+      background-color: grey;
+      border-radius: 5px;
+      margin: 20px 0 0 0;
+      -webkit-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.3);
+      -moz-box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.3);
+      box-shadow: -1px 4px 28px -1px rgba(0,0,0,0.3);
+}
+.editDiv {
+    margin-top: 30px;
+}
+.name {
+    font-size: 1.2rem;
+    display: inline;
+    padding-right: 20px;
+}
+.edit {
+    display: inline;
+}
+.fa-edit {
+    font-size: 1.5rem;
+}
+.score {
+    font-size: 1.1rem;
+}
+p {
+    margin-bottom: 40px;
 }

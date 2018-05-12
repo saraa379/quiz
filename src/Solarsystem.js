@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import fire from './fire';
 import QuizPage from './QuizPage.js';
 import './QuizPage.css';
@@ -47,11 +46,10 @@ class Solarsystem extends Component {
 			 }
 		}; //end of states
 		this.quizClicked = this.quizClicked.bind(this);
-	}
+	}//end of constructor
 
 	componentDidMount() {
 		//generates random numbers
-		var tempArray = [];
 		for (var i = 0; i < 6; i++) {
 			var randomNr = 0;
 			while(this.state.randomNumbers.includes(randomNr)){
@@ -60,7 +58,7 @@ class Solarsystem extends Component {
 			this.state.randomNumbers.push(randomNr);
 		}
 		this.state.randomNumbers.shift();
-		console.log("Random numbers from state: " + this.state.randomNumbers);
+		//console.log("Random numbers from state: " + this.state.randomNumbers);
 		var that = this;
 		//Retrieving first question
 		var ind1 = this.state.randomNumbers[0];
@@ -75,12 +73,6 @@ class Solarsystem extends Component {
 							right: data1.right
 						}
 					});
-
-					//console.log("Question 1 inside: " + that.state.quiz1.question);
-					//console.log("answer 1 inside: " + that.state.quiz1.answer1);
-					//console.log("answer 2 inside: " + that.state.quiz1.answer2);
-					//console.log("answer 3 inside: " + that.state.quiz1.answer3);
-					//console.log(" Right answer is: " + that.state.quiz1.right);
 
 		});//end of fire
 		//Retrieving second question
@@ -139,11 +131,11 @@ class Solarsystem extends Component {
 							right: data5.right
 						}
 					});//end of setState
-					console.log("Question 5 inside: " + that.state.quiz5.question);
-					console.log("answer 1 inside: " + that.state.quiz5.answer1);
-					console.log("answer 2 inside: " + that.state.quiz5.answer2);
-					console.log("answer 3 inside: " + that.state.quiz5.answer3);
-					console.log(" Right answer is: " + that.state.quiz5.right);
+					//console.log("Question 5 inside: " + that.state.quiz5.question);
+					//console.log("answer 1 inside: " + that.state.quiz5.answer1);
+					//console.log("answer 2 inside: " + that.state.quiz5.answer2);
+					//console.log("answer 3 inside: " + that.state.quiz5.answer3);
+					//console.log(" Right answer is: " + that.state.quiz5.right);
 		});//end of fire
 		/*
 		var ind;
@@ -171,7 +163,7 @@ class Solarsystem extends Component {
 //quiz page button is clicked
 	quizClicked(option){
 			//console.log("clicked option: " + option);
-			console.log("current page " + this.state.currentPage);
+			//console.log("current page " + this.state.currentPage);
 			//findout current quiz based on current Page
 			var currentQuiz = {};
 			if(this.state.currentPage == 1){
@@ -197,21 +189,21 @@ class Solarsystem extends Component {
 
 			//checks if new score is more that prev prevScore
 			if (this.state.currentPage == 5){
-					console.log("New score " + this.state.score);
-					console.log("old score " + this.state.prevScore);
-					console.log("user key " + this.state.userKey);
+					//console.log("New score " + this.state.score);
+					//console.log("old score " + this.state.prevScore);
+					//console.log("user key " + this.state.userKey);
 					if(this.state.prevScore < this.state.score){
 							//updates current users highestScore in db
 						fire.database().ref('users/' + this.state.userKey + '/highScore').set(this.state.score);
 					}
 			}
-			console.log("Solar system comp user previous score: " + this.props.user.highestScore);
+			//console.log("Solar system comp user previous score: " + this.props.user.highestScore);
 			//current page is incremented by 1
 			var tempCurrentPage = this.state.currentPage;
 			tempCurrentPage = tempCurrentPage + 1;
 			this.setState({currentPage: tempCurrentPage});
 
-	}
+	}//end of quizClick
 
 	render() {
 		//Retrieving questions from database
