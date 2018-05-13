@@ -17,14 +17,12 @@ class Highscore extends Component {
 			snapshot.forEach( child => {
 
 				var userTemp = child.val();
-
-				that.setState({
-			  		users: that.state.users.concat([userTemp])
-						//users: that.state.users.unshift([userTemp])
-				});//end of setState
+				dataArray.push(userTemp);
 			})//end of foreach
+			that.setState({
+	      	users: dataArray
+	    });
 		});//end of fire
-
   } //end of didmount
 
 		render() {
