@@ -46,9 +46,38 @@ class Solarsystem extends Component {
 			 }
 		}; //end of states
 		this.quizClicked = this.quizClicked.bind(this);
+		this.restart = this.restart.bind(this);
+		this.restartStates = this.restartStates.bind(this);
+		this.restartQuiz = this.restartQuiz.bind(this);
 	}//end of constructor
 
 	componentDidMount() {
+		this.restart();
+		/*
+		var ind;
+		for (ind = 0; ind < this.state.randomNumbers.length; ind++) {
+		    console.log("Random numbers from state: " + this.state.randomNumbers[ind]);
+
+				var index = this.state.randomNumbers[ind];
+				fire.database().ref('Solarsystem/' + index).once('value', function(snapshot) {
+							let data = snapshot.val();
+							//that.setState({q: data.question});
+
+				})//end of db.ref
+				//console.log("Question outside: " + this.state.q);
+				//console.log("Answer1: " + this.state.q1.choice1.answer);
+				//console.log("Answer1corr: " + this.state.q1.choice1.correctness);
+		}*///end of for
+
+  } //end of didmount
+
+	componentWillReceiveProps(newProps){
+				this.setState({prevScore: newProps.user.highestScore});//end of setState
+				this.setState({userKey: newProps.user.key});
+	}//end of will recieve props
+
+	//restart the component
+	restart(){
 		//generates random numbers
 		for (var i = 0; i < 6; i++) {
 			var randomNr = 0;
@@ -131,35 +160,18 @@ class Solarsystem extends Component {
 							right: data5.right
 						}
 					});//end of setState
-					//console.log("Question 5 inside: " + that.state.quiz5.question);
-					//console.log("answer 1 inside: " + that.state.quiz5.answer1);
-					//console.log("answer 2 inside: " + that.state.quiz5.answer2);
-					//console.log("answer 3 inside: " + that.state.quiz5.answer3);
-					//console.log(" Right answer is: " + that.state.quiz5.right);
 		});//end of fire
-		/*
-		var ind;
-		for (ind = 0; ind < this.state.randomNumbers.length; ind++) {
-		    console.log("Random numbers from state: " + this.state.randomNumbers[ind]);
-
-				var index = this.state.randomNumbers[ind];
-				fire.database().ref('Solarsystem/' + index).once('value', function(snapshot) {
-							let data = snapshot.val();
-							//that.setState({q: data.question});
-
-				})//end of db.ref
-				//console.log("Question outside: " + this.state.q);
-				//console.log("Answer1: " + this.state.q1.choice1.answer);
-				//console.log("Answer1corr: " + this.state.q1.choice1.correctness);
-		}*///end of for
-
-  } //end of didmount
-
-	componentWillReceiveProps(newProps){
-				this.setState({prevScore: newProps.user.highestScore});//end of setState
-				this.setState({userKey: newProps.user.key});
-	}//end of will recieve props
-
+	}
+	restartStates(){
+		this.state.currentPage = 1;
+		this.state.randomNumbers = [];
+		this.state.score = 0;
+	}
+	restartQuiz(){
+			this.restartStates();
+			this.restart();
+			//console.log("Restart button is clicked");
+	}
 //quiz page button is clicked
 	quizClicked(option){
 			//console.log("clicked option: " + option);
@@ -196,6 +208,9 @@ class Solarsystem extends Component {
 							//updates current users highestScore in db
 						fire.database().ref('users/' + this.state.userKey + '/highScore').set(this.state.score);
 					}
+
+					//restart the component
+
 			}
 			//console.log("Solar system comp user previous score: " + this.props.user.highestScore);
 			//current page is incremented by 1
@@ -251,6 +266,7 @@ class Solarsystem extends Component {
 					return <div className="quizWrap">
 											<h3>{feedback}</h3>
 											<p>Your score: {this.state.score} out of 25</p>
+											<button id="btnRestart" className="btnQuiz" onClick={this.restartQuiz}>Restart</button>
 								</div>
 				}
 				return (

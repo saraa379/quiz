@@ -46,9 +46,21 @@ class Starsplanets extends Component {
 			 }
 		}; //end of states
 		this.quizClicked = this.quizClicked.bind(this);
+		this.restart = this.restart.bind(this);
+		this.restartStates = this.restartStates.bind(this);
+		this.restartQuiz = this.restartQuiz.bind(this);
 	}
 
 	componentDidMount() {
+				this.restart();
+  } //end of didmount
+
+	componentWillReceiveProps(newProps){
+				this.setState({prevScore: newProps.user.highestScore});//end of setState
+				this.setState({userKey: newProps.user.key});
+	}//end of will recieve props
+
+	restart(){
 		//generates random numbers
 		for (var i = 0; i < 6; i++) {
 			var randomNr = 0;
@@ -137,12 +149,18 @@ class Starsplanets extends Component {
 					//console.log("answer 3 inside: " + that.state.quiz5.answer3);
 					//console.log(" Right answer is: " + that.state.quiz5.right);
 		});//end of fire
-  } //end of didmount
+	}
 
-	componentWillReceiveProps(newProps){
-				this.setState({prevScore: newProps.user.highestScore});//end of setState
-				this.setState({userKey: newProps.user.key});
-	}//end of will recieve props
+	restartStates(){
+		this.state.currentPage = 1;
+		this.state.randomNumbers = [];
+		this.state.score = 0;
+	}
+
+	restartQuiz(){
+			this.restartStates();
+			this.restart();
+	}
 
 	quizClicked(option){
 			//console.log("clicked option: " + option);
@@ -230,6 +248,7 @@ class Starsplanets extends Component {
 			return <div className="quizWrap">
 									<h3>{feedback}</h3>
 									<p>Your score: {this.state.score} out of 25</p>
+									<button id="btnRestart" className="btnQuiz" onClick={this.restartQuiz}>Restart</button>
 						</div>
 		}
 		return (
