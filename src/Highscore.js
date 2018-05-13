@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Highscore.css';
-import firebase from 'firebase';
 import fire from './fire';
 import Users from './Users.js';
 
