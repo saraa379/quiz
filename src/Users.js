@@ -8,7 +8,7 @@ class Users extends Component {
 
 	render() {
 
-			const usersArray = (this.props.users).reverse();
+			const usersArray = this.props.users;
 
 			const listItems = usersArray.map(function(user) {
 					return <div className="userWrap" key={user.key}>

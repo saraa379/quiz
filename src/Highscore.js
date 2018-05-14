@@ -17,7 +17,7 @@ class Highscore extends Component {
 			snapshot.forEach( child => {
 
 				var userTemp = child.val();
-				dataArray.push(userTemp);
+				dataArray.unshift(userTemp);
 			})//end of foreach
 			that.setState({
 	      	users: dataArray
